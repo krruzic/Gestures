@@ -49,22 +49,19 @@ while( my $line  = <INFILE>)
     push @yHistThree, $y;
     if( @xHistThree >= 2 && $xHistThree[0] ne $xHistThree[1])
     {
-      print "@xHistThree\n";
       my @srt = sort @xHistThree;
       my @revSrt = reverse sort @xHistThree;
 
       if( "@srt" eq "@xHistThree" )
       {
         # crtl + alt + right arrow - switch Right Workspace
-     print "Scrolling\n";
-        $eventString = "^(%({RIG}))";
+	   $eventString = "^(%({RIG}))";
 	   execEvent();
       }
       elsif( "@revSrt" eq "@xHistThree" )
       {
         # crtl + alt + left arrow - switch Left Workspace
-	   print "Scrolling\n";
-        $eventString = "^(%({LEF}))";
+	   $eventString = "^(%({LEF}))";
 	   execEvent();
       }#if forward or backward
 
@@ -73,27 +70,23 @@ while( my $line  = <INFILE>)
 
     if( @yHistThree >= 2 && $yHistThree[0] ne $yHistThree[1])
     {
-      print "@yHistThree\n";
       my @srtY = sort @yHistThree;
       my @revSrtY = reverse sort @yHistThree;
 
       if( "@srtY" eq "@yHistThree" )
       {
         # crtl + alt + up - Workspace Overview
-        print "Overview\n";
         $eventString = "^(%({UP}))";
         execEvent();
       }
       elsif( "@revSrtY" eq "@yHistThree" )
       {
         # crtl + alt + down - Window Overview
-        print "Windows\n";
-        $eventString = "^(%({DWN}))";
+        $eventString = "^(%({DOWN}))";
         execEvent();
       }#if forward or backward
     }
-  }
-  elsif( $f eq "2" || $f eq "1" )
+  }elsif( $f eq "2" || $f eq "1" )
   {
     # accept 1 or 2 finger entries as part of pinch section
     @xHistThree = ();
@@ -121,7 +114,11 @@ while( my $line  = <INFILE>)
         for my $each( @yHist[40..49] ){ $diffY += abs( $each - $tenY ) }
 
         # ctrl - decrease font size
-        if( ($diffX+$diffY) > 80 ){ $eventString = "^({-})" }
+        if( ($diffX+$diffY) > 80 )
+        { 
+          $eventString = "^({-})" 
+          execEvent();
+        }
 
         @xHist = ();
         @yHist = ();
@@ -139,25 +136,32 @@ while( my $line  = <INFILE>)
       {
         # ctrl + increase font size
         $eventString = "^({+})";
+        execEvent();
 
         @xHist = ();
         @yHist = ();
         @xHistThree = ();
       }#if absx and absy
-  else
+
+    }#if enough data
+
+
+
+  }else
   {
     # reset all data points, yes you can have 0 fingers at x,y
     @xHist = ();
     @yHist = ();
     @xHistThree = ();
   }# if not one or two or three fingers
+
 }#synclient line in
 sub execEvent
 {
   # only process one event per time window
   if( $eventString ne "default" )
   {
-    print "Trying to exec\n";
+
     if( abs(time - $eventTime) >= 1 )
     {
       $eventTime = time;
@@ -185,4 +189,3 @@ sub getEndAvg
   $val = abs( $val - $centerTouchPad );
   return($val);
 }#getEndAvg
-
