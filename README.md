@@ -2,7 +2,7 @@ Multi-Touchpad
 ==============
 This is a perl script heavily based off of synaptic's touchpad gestures for Linux, adds window overview as well as workspace overview.
 
-Based off of source found here: [IBM Multi-touch gestures](http://www.ibm.com/developerworks/opensource/library/os-touchpad/#resources)
+Based off of source found here: [IBM Multi-touch gestures](http://www.ibm.com/developerworks/opensource/library/os-touchpad/#resources). 
 Currently very finicky and not at all precise, it works better than the original, but takes some getting used to. 
 
 DEPENDANCIES:
